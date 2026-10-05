@@ -1,11 +1,15 @@
-"""
-PyInstaller 打包脚本
-运行: python build.py
-"""
 import os
 import sys
 import shutil
 import subprocess
+
+# 强制 UTF-8，兼容 Windows
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 
 APP_NAME = "UniversalConverter"
@@ -21,10 +25,10 @@ def clean():
 
 
 def build():
-    print("🧹 清理旧文件...")
+    print("[*] Cleaning old files...")
     clean()
 
-    print("📦 开始打包（可能需要 1-3 分钟）...")
+    print("[*] Building (this may take 1-3 minutes)...")
 
     sep = ";" if sys.platform == "win32" else ":"
 
@@ -32,9 +36,8 @@ def build():
         sys.executable, "-m", "PyInstaller",
         "--noconfirm",
         "--onefile",
-        "--windowed",                # 不显示控制台
+        "--windowed",
         "--name", APP_NAME,
-        # 收集所有需要的依赖
         "--collect-all", "tkinterdnd2",
         "--collect-all", "pypdf",
         "--collect-all", "pdfplumber",
@@ -44,7 +47,6 @@ def build():
         "--hidden-import", "reportlab",
         "--hidden-import", "striprtf",
         "--hidden-import", "markdownify",
-        # 打包数据文件
         "--add-data", f"assets{sep}assets" if os.path.exists("assets") else ".",
         "main.py",
     ]
@@ -52,9 +54,9 @@ def build():
     subprocess.run(args, check=True)
 
     print("\n" + "=" * 50)
-    print(f"✅ 打包完成！")
-    print(f"📂 可执行文件位置: dist/{APP_NAME}.exe（Windows）")
-    print(f"📂 或: dist/{APP_NAME}（macOS / Linux）")
+    print("[OK] Build complete!")
+    print(f"Executable: dist/{APP_NAME}.exe (Windows)")
+    print(f"Or:         dist/{APP_NAME}    (macOS / Linux)")
     print("=" * 50)
 
 
