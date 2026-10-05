@@ -8,12 +8,13 @@ build/
 dist/
 *.egg-info/
 .eggs/
-
-# Virtual Environment
 venv/
 env/
 ENV/
 .venv
+
+# PyInstaller
+*.spec
 
 # IDE
 .vscode/
@@ -21,11 +22,10 @@ ENV/
 *.swp
 *.swo
 
-# OS
+# 系统
 .DS_Store
 Thumbs.db
 
-# Test output
-test_output/
-*.test.pdf
-*.test.txt
+# 输出目录
+output/
+converted/
